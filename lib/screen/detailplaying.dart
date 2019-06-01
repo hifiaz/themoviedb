@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:themoviedb/model/detailplaying.dart';
+import 'package:themoviedb/data/api.dart';
 import 'package:themoviedb/screen/expadeditem.dart';
 
 class DetailPlaying extends StatefulWidget {
@@ -18,21 +16,10 @@ class DetailPlaying extends StatefulWidget {
 class _DetailPlayingState extends State<DetailPlaying> {
   final f = DateFormat('yyyy-MM-dd');
 
-  Future<DetailMovie> getDetailPlaying() async {
-    var url =
-        'https://api.themoviedb.org/3/movie/${widget.id}?api_key=b64508afff2418ed0dcf89b770586d77&language=en-EN&page=1';
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      return DetailMovie.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Faild to load');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getDetailPlaying(),
+        future: MovieRepository().getDetailPlaying(widget.id),
         builder: (BuildContext c, AsyncSnapshot s) {
           if (s.data == null) {
             return Container(

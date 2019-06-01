@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:themoviedb/data/api.dart';
 import 'package:themoviedb/model/review.dart';
 import 'package:themoviedb/screen/review.dart';
 import 'package:http/http.dart' as http;
@@ -154,7 +155,7 @@ class _ExpandedEventItemState extends State<ExpandedEventItem> {
           height: 10.0,
         ),
         FutureBuilder(
-            future: getReview(),
+            future: MovieRepository().getReview(1, widget.id),
             builder: (BuildContext c, AsyncSnapshot s) {
               if (s.data == null) {
                 return Center(
