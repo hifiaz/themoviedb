@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:themoviedb/data/api.dart';
+import 'package:themoviedb/data/dbhelper.dart';
+import 'package:themoviedb/model/favorite.dart';
 import 'package:themoviedb/screen/expadeditem.dart';
 
 class DetailPlaying extends StatefulWidget {
@@ -51,7 +53,17 @@ class _DetailPlayingState extends State<DetailPlaying> {
                       actions: <Widget>[
                         IconButton(
                           icon: Icon(Icons.favorite),
-                          onPressed: () {},
+                          onPressed: () {
+                            final mov = Favorite(
+                              title: s.data.originalTitle,
+                              id: s.data.id,
+                              poster: s.data.posterPath,
+                              overview: s.data.overview,
+                              vote: s.data.voteAverage,
+                              // genres: s.data.genres
+                            );
+                            DBprovider.db.newFavorite(mov);
+                          },
                         )
                       ],
                     ),

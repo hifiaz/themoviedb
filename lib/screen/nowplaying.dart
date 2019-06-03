@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:themoviedb/data/api.dart';
 import 'package:themoviedb/model/playing.dart';
 import 'package:themoviedb/screen/detailplaying.dart';
+import 'package:themoviedb/screen/favorite.dart';
 
 class NowPlaying extends StatefulWidget {
   @override
@@ -25,7 +26,12 @@ class _NowPlayingState extends State<NowPlaying> {
                 Icons.favorite,
                 color: Colors.pink,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => FavoriteScreen()));
+              },
             )
           ],
         ),

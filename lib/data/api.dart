@@ -20,7 +20,6 @@ class MovieRepository {
         pageNumber.toString();
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      print('Heal yeah');
       return Playing.fromJson(json.decode(response.body));
     } else {
       throw Exception('Faild to load');
