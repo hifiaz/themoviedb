@@ -51,20 +51,13 @@ class _DetailPlayingState extends State<DetailPlaying> {
                       backgroundColor: Colors.transparent,
                       elevation: 0.0,
                       actions: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.favorite),
-                          onPressed: () {
-                            final mov = Favorite(
-                              title: s.data.originalTitle,
-                              id: s.data.id,
-                              poster: s.data.posterPath,
-                              overview: s.data.overview,
-                              vote: s.data.voteAverage,
-                              // genres: s.data.genres
-                            );
-                            DBprovider.db.newFavorite(mov);
-                          },
-                        )
+                        new FavoriteButton(
+                          id: s.data.id,
+                          title: s.data.originalTitle,
+                          poster: s.data.posterPath,
+                          overview: s.data.overview,
+                          vote: s.data.voteAverage,
+                        ),
                       ],
                     ),
                     body: Container(
@@ -81,6 +74,90 @@ class _DetailPlayingState extends State<DetailPlaying> {
                     genres: s.data.genres)
               ],
             );
+        });
+  }
+}
+
+class FavoriteButton extends StatefulWidget {
+  final int id;
+  final double vote;
+  final String title, poster, overview;
+  const FavoriteButton({
+    this.id,
+    this.title,
+    this.poster,
+    this.overview,
+    this.vote,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _FavoriteButtonState createState() => _FavoriteButtonState();
+}
+
+class _FavoriteButtonState extends State<FavoriteButton> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: DBprovider.db.getFavorite(widget.id),
+        builder: (BuildContext c, AsyncSnapshot s) {
+          if (s.hasData)
+            return IconButton(
+              icon: Icon(
+                Icons.favorite,
+                color: Colors.red,
+              ),
+              onPressed: () {
+                DBprovider.db.deleteFavorite(widget.id);
+                setState(() {});
+              },
+            );
+          else
+            return IconButton(
+              icon: Icon(Icons.favorite),
+              onPressed: () {
+                final mov = Favorite(
+                  title: widget.title,
+                  id: widget.id,
+                  poster: widget.poster,
+                  overview: widget.overview,
+                  vote: widget.vote,
+                  // genres: s.data.genres
+                );
+                DBprovider.db.newFavorite(mov);
+                setState(() {});
+              },
+            );
+
+          //  else {
+          //   return Text('Load');
+          // }
+          // if (s.data != null) {
+          //   return IconButton(
+          //     icon: Icon(Icons.favorite),
+          //     onPressed: () {
+          //       final mov = Favorite(
+          //         title: title,
+          //         id: id,
+          //         poster: poster,
+          //         overview: overview,
+          //         vote: vote,
+          //         // genres: s.data.genres
+          //       );
+          //       DBprovider.db.newFavorite(mov);
+          //     },
+          //   );
+          // } else {
+          //   IconButton(
+          //     icon: Icon(
+          //       Icons.favorite,
+          //       color: Colors.red,
+          //     ),
+          //     onPressed: () {
+          //       DBprovider.db.deleteFavorite(id);
+          //     },
+          //   );
+          // }
         });
   }
 }

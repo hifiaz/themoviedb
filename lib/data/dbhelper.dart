@@ -39,8 +39,13 @@ class DBprovider {
     return res;
   }
 
+  getFavorite(int id) async {
+    final db = await database;
+    var res = await db.query("Movies", where: "id = ?", whereArgs: [id]);
+    return res.isNotEmpty ? Favorite.fromMap(res.first) : null;
+  }
+
   getAllFavorite() async {
-    print('udah sampe sini');
     final db = await database;
     var res = await db.query("Movies");
     List<Favorite> list =
